@@ -24,7 +24,7 @@ Import-Module -Name PSGraphite -Force -PassThru
 
 ## Authentication
 
-For use with e.g. Grafana Cloud you must have an account to access the API. A _API Key_ fror Grafana can be generated at <https://grafana.com/orgs/[user-name]/api-keys>.
+For use with e.g. Grafana Cloud you must have an account to access the API. Access tokens (_API Keys_) for Grafana can be generated at <https://grafana.com/orgs/[your-user-name]/api-keys>.
 
 To authenticate, pass the generated access token using the `-AccessToken` parameter with each call or set the `GRAPHITE_ACCESS_TOKEN` environment variable:
 
@@ -38,11 +38,11 @@ Use `Get-Command -Module PSGraphite` for a list of functions provided by this mo
 
 ### Examples
 
-#### Get Unix epoch timestamp for current date/time
+#### Get Unix Epoch for current date/time
 
 ```powershell
 $timestamp = Get-GraphiteTimestamp
-Write-Host "Current Unix epoch is: $timestamp"
+Write-Host "Current Unix Epoch is: $timestamp"
 ```
 
 #### Get Graphite metrics data

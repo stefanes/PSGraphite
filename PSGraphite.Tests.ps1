@@ -2,16 +2,16 @@
 param()
 
 Describe "Get-GraphiteTimestamp" {
-    It "Can get Graphite timestamp" {
+    It "Can get Graphite timestamp (Unix Epoch)" {
         $global:timestamp = Get-GraphiteTimestamp
         $timestamp | Should -Not -Be $null
     }
 
-    It "Can get Graphite timestamp from date" {
+    It "Can get Unix Epoch from date" {
         Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z' | Should -Be '1662562317'
     }
 
-    It "Can get epoch back" {
+    It "Can get Unix Epoch back" {
         Get-GraphiteTimestamp -Timestamp '1662562317' | Should -Be '1662562317'
     }
 }

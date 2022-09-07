@@ -63,7 +63,7 @@ Accept wildcard characters: False
 ```
 
 ### -Timestamp
-Specifies timestamp, will be converted to Unix epoch time if needed.
+Specifies the timestamp of the metrics, converted to Unix Epoch if needed.
 
 ```yaml
 Type: String

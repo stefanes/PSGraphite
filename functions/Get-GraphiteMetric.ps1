@@ -31,7 +31,7 @@
         [Alias('Interval')]
         [int] $IntervalInSeconds,
 
-        # Specifies timestamp, will be converted to Unix epoch time if needed.
+        # Specifies the timestamp of the metrics, converted to Unix Epoch if needed.
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $Timestamp
     )
