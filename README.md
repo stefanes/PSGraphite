@@ -50,10 +50,10 @@ Write-Host "Current Unix Epoch is: $timestamp"
 ```powershell
 $graphiteMetrics = Get-GraphiteMetric -Metrics @(
     @{
-        name = 'test.series.1'; value = 3.14159
+        name = 'test.series.1'; value = '3.14159'
     }
     @{
-        name = 'test.series.2'; value = 3.14159
+        name = 'test.series.2'; value = '3'
     }
 ) -IntervalInSeconds 10 -Timestamp $timestamp
 Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
@@ -84,7 +84,7 @@ DEBUG: Graphite metrics: [
   },
   {
     "name": "test.series.2",
-    "value": 3.14159,
+    "value": 3,
     "interval": 10,
     "time": 1662578870
   }

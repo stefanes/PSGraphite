@@ -15,7 +15,7 @@
             },
             {
                 "name": "test.series.2",
-                "value": 3.14159,
+                "value": 3,
                 "interval": 10,
                 "time": 1662562317
             }

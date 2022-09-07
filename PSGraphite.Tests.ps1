@@ -2,7 +2,7 @@
 param()
 
 Describe "Get-GraphiteTimestamp" {
-    It "Can get Graphite timestamp (Unix Epoch)" {
+    It "Can get new Graphite timestamp (Unix Epoch)" {
         $global:timestamp = Get-GraphiteTimestamp
         $timestamp | Should -Not -Be $null
     }
@@ -16,17 +16,39 @@ Describe "Get-GraphiteTimestamp" {
     }
 }
 
-Describe "Get-GraphiteMetrics" {
-    It "Can get Graphite metrics" {
-        $global:graphiteMetrics = Get-GraphiteMetric -Metrics @{
-            name = 'test.series.1'; value = '3.14159'
+Describe "Get-GraphiteMetric" {
+    It "Can get singel Graphite metric" {
+        $global:singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14'
         } -Interval 10 -Timestamp $timestamp
+        $singleGraphiteMetric | Should -Not -Be $null
+    }
+
+    It "Can get multiple Graphite metrics" {
+        $global:graphiteMetrics = Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                name = 'test.series.2'; value = '3'
+            }
+        ) -Interval 10 -Timestamp $timestamp
         $graphiteMetrics | Should -Not -Be $null
     }
 }
 
 Describe "Send-GraphiteMetric" {
-    It "Can send Graphite metrics" {
+    It "Can send single Graphite metric" {
+        if ($env:GRAPHITE_ACCESS_TOKEN) {
+            $response = Send-GraphiteMetric -Metrics $singleGraphiteMetric
+        }
+        else {
+            Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
+        }
+        $response | Should -Not -Be $null
+    }
+
+    It "Can send multiple Graphite metrics" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
             $response = Send-GraphiteMetric -Metrics $graphiteMetrics
         }
@@ -40,8 +62,8 @@ Describe "Send-GraphiteMetric" {
         { Send-GraphiteMetric -Metrics @"
 [
     {
-        "name": "test.series.1",
-        "value": "3.14159",
+        "name": "test.series.0",
+        "value": "3.14",
         "interval": 10,
         "time": $timestamp
     }

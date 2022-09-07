@@ -8,16 +8,16 @@
         Note: Metrics input must be provided in the format '@(@{...}, @{...})', see example.
     .Example
         $graphiteMetrics = Get-GraphiteMetric -Metrics @{
-            name = 'test.series.1'; value = 3.14159
+            name = 'test.series.0'; value = '3.14'
         } -IntervalInSeconds 10 -Timestamp $timestamp
         Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
     .Example
         $graphiteMetrics = Get-GraphiteMetric -Metrics @(
             @{
-                name = 'test.series.1'; value = 3.14159
+                name = 'test.series.1'; value = '3.14159'
             }
             @{
-                name = 'test.series.2'; value = 3.14159
+                name = 'test.series.2'; value = '3'
             }
         ) -IntervalInSeconds 10 -Timestamp $timestamp
         Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
