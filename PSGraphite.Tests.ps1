@@ -1,6 +1,8 @@
 ﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
 param()
 
+$global:pester_URI = 'https://graphite-us-central1.grafana.net/metrics'
+
 Describe "Get-GraphiteTimestamp" {
     It "Can get new Graphite timestamp (Unix Epoch)" {
         $global:timestamp = Get-GraphiteTimestamp
@@ -17,27 +19,99 @@ Describe "Get-GraphiteTimestamp" {
 }
 
 Describe "Get-GraphiteMetric" {
-    It "Can get singel Graphite metric" {
-        $global:singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
-            name = 'test.series.0'; value = '3.14'
-        } -Interval 10 -Timestamp $timestamp
-        $singleGraphiteMetric | Should -Not -Be $null
-    }
+    #region Metrics
+    $singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
+        name = 'test.series.0'; value = '3.14'
+    } -Interval 10 -Timestamp $timestamp
 
-    It "Can get multiple Graphite metrics" {
-        $global:graphiteMetrics = Get-GraphiteMetric -Metrics @(
+    $graphiteMetricWithTag = Get-GraphiteMetric -Metrics @{
+        name = 'test.series.0'; value = '3.14'
+    } -Interval 10 -Timestamp $timestamp -Tag 'tag=value' | ConvertFrom-Json
+
+    $graphiteMetrics = Get-GraphiteMetric -Metrics @(
+        @{
+            name = 'test.series.1'; value = '3.14159'
+        }
+        @{
+            name = 'test.series.2'; value = '3'
+        }
+    ) -Interval 10 -Timestamp $timestamp
+
+    $graphiteMetricsWithTags = Get-GraphiteMetric -Metrics @(
+        @{
+            name = 'test.series.1'; value = '3.14159'
+        }
+        @{
+            name = 'test.series.2'; value = '3'
+        }
+    ) -Interval 10 -Timestamp $timestamp -Tag 'tag1=value1', 'tag2=value2' | ConvertFrom-Json
+    #endregion
+
+    It "Can get Graphite metric" {
+        Get-GraphiteMetric -Metrics @(
             @{
                 name = 'test.series.1'; value = '3.14159'
             }
             @{
-                name = 'test.series.2'; value = '3'
+                name  = 'test.series.2'
+                value = '3'
+                tags  = @(
+                    'tag3=value3'
+                    'tag4=value4'
+                )
             }
-        ) -Interval 10 -Timestamp $timestamp
-        $graphiteMetrics | Should -Not -Be $null
+        ) -Interval 10 -Timestamp $timestamp -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
+    }
+
+    It "Format of singel Graphite metric (root)" {
+        $singleGraphiteMetric.StartsWith('[') | Should -Be $true
+    }
+
+    It "Format of singel Graphite metric (no tags)" {
+        $($singleGraphiteMetric | ConvertFrom-Json).tags | Should -Be $null
+    }
+
+    It "Format of singel Graphite metric (interval)" {
+        ($graphiteMetricWithTag.interval.GetType()).Name | Should -Be 'Int64'
+    }
+
+    It "Format of singel Graphite metric (value)" {
+        ($graphiteMetricWithTag.value.GetType()).Name | Should -Be 'Double'
+    }
+
+    It "Format of singel Graphite metric (time)" {
+        ($graphiteMetricWithTag.time.GetType()).Name | Should -Be 'Int64'
+    }
+
+    It "Format of singe Graphite metric tag" {
+        ($graphiteMetricWithTag.tags.GetType()).Name | Should -Be 'Object[]'
+    }
+
+    It "Format of multiple Graphite metrics" {
+        $graphiteMetrics.StartsWith('[') | Should -Be $true
+    }
+
+    It "Format of multiple Graphite metric tags" {
+        ($graphiteMetricsWithTags.tags.GetType()).Name | Should -Be 'Object[]'
     }
 }
 
 Describe "Send-GraphiteMetric" {
+    #region Metrics
+    $singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
+        name = 'test.series.0'; value = '3.14'
+    } -Interval 10
+
+    $graphiteMetrics = Get-GraphiteMetric -Metrics @(
+        @{
+            name = 'test.series.1'; value = '3.14159'
+        }
+        @{
+            name = 'test.series.2'; value = '3'
+        }
+    ) -Interval 10 -Tag 'tag1=value1', 'tag2=value2' | ConvertFrom-Json
+    #endregion
+
     It "Can send single Graphite metric" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
             $response = Send-GraphiteMetric -Metrics $singleGraphiteMetric
@@ -65,10 +139,14 @@ Describe "Send-GraphiteMetric" {
         "name": "test.series.0",
         "value": "3.14",
         "interval": 10,
-        "time": $timestamp
+        "time": 1662562317
     }
 ]
 "@
         } | Should -Throw
+    }
+
+    It "Fails when invalid URI" {
+        { Invoke-TibberQuery -URI $($Pester_URI -replace '.net', '.com') -Query "{}" } | Should -Throw
     }
 }

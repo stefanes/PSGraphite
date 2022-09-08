@@ -53,9 +53,14 @@ $graphiteMetrics = Get-GraphiteMetric -Metrics @(
         name = 'test.series.1'; value = '3.14159'
     }
     @{
-        name = 'test.series.2'; value = '3'
+        name  = 'test.series.2'
+        value = '3'
+        tags  = @(
+            'tag3=value3'
+            'tag4=value4'
+        )
     }
-) -IntervalInSeconds 10 -Timestamp $timestamp
+) -IntervalInSeconds 10 -Timestamp $timestamp -Tags @('tag1=value1', 'tag2=value2')
 Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
 ```
 
