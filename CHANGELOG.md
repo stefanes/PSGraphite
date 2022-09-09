@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.1.1 (beta)
+## Version 0.1.1
 
 * Support for tags in [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md).
 
