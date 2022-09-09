@@ -1,10 +1,13 @@
-﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 param()
 
+BeforeAll {
+    $GraphiteURI = 'https://graphite-us-central1.grafana.net/metrics'
+}
+
 Describe "Get-GraphiteTimestamp" {
-    It "Can get Graphite timestamp (Unix Epoch)" {
-        $global:timestamp = Get-GraphiteTimestamp
-        $timestamp | Should -Not -Be $null
+    It "Can get new Graphite timestamp (Unix Epoch)" {
+        Get-GraphiteTimestamp | Should -Not -Be $null
     }
 
     It "Can get Unix Epoch from date" {
@@ -16,19 +19,138 @@ Describe "Get-GraphiteTimestamp" {
     }
 }
 
-Describe "Get-GraphiteMetrics" {
-    It "Can get Graphite metrics" {
-        $global:graphiteMetrics = Get-GraphiteMetric -Metrics @{
-            name = 'test.series.1'; value = '3.14159'
-        } -Interval 10 -Timestamp $timestamp
-        $graphiteMetrics | Should -Not -Be $null
+Describe "Get-GraphiteMetric" {
+    BeforeAll {
+        $metricsSingle = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10 -Timestamp '1662562317'
+
+        $metricsSingleWithTag = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10 -Timestamp '1662562317' -Tag 'tag=value'
+
+        $metricsMultiWithTags = Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                name = 'test.series.2'; value = '3.14159'
+            }
+        ) -IntervalInSeconds 10 -Timestamp '1662562317' -Tag 'tag1=value1', 'tag2=value2'
+    }
+
+    It "Can get Graphite metric" {
+        Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                value = '3.14159'; time = '1662562317'
+            }
+            @{
+                name  = 'test.series.2'
+                value = '3.14159'
+                tags  = @(
+                    'tag3=value3'
+                    'tag4=value4'
+                )
+            }
+        ) -Name 'test.series.0' -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
+    }
+
+    It "Fail to get metric with missing 'value'" {
+        { Get-GraphiteMetric -Metrics @(
+                @{
+                    name     = 'test.series.1'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
+    }
+
+    It "Fail to get metric with missing name" {
+        { Get-GraphiteMetric -Metrics @(
+                @{
+                    value    = '3.14159'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
+    }
+
+    It "Fail to get metric with empty name" {
+        { Get-GraphiteMetric -Metrics @(
+                @{
+                    name     = ''
+                    value    = '3.14159'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
+    }
+
+    It "Format of Single Graphite metric (root)" {
+        $metricsSingle.StartsWith('[') | Should -Be $true
+    }
+
+    It "Format of multiple Graphite metrics (root)" {
+        $metricsMultiWithTags.StartsWith('[') | Should -Be $true
+    }
+
+    It "Format of Single Graphite metric (no tags)" {
+        $($metricsSingle | ConvertFrom-Json).tags | Should -Be $null
+    }
+
+    It "Format of Single Graphite metric (interval)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).interval.GetType()).Name | Should -Be 'Int64'
+    }
+
+    It "Format of Single Graphite metric (value)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).value.GetType()).Name | Should -Be 'Double'
+    }
+
+    It "Format of Single Graphite metric (time)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).time.GetType()).Name | Should -Be 'Int64'
+    }
+
+    It "Format of singe Graphite metric tag" {
+        (($metricsSingleWithTag | ConvertFrom-Json).tags.GetType()).Name | Should -Be 'Object[]'
+    }
+
+    It "Format of multiple Graphite metric tags" {
+        (($metricsMultiWithTags | ConvertFrom-Json).tags.GetType()).Name | Should -Be 'Object[]'
     }
 }
 
 Describe "Send-GraphiteMetric" {
-    It "Can send Graphite metrics" {
+    BeforeAll {
+        $sendMetricsSingle = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10
+
+        $sendMetricsMulti = Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                name = 'test.series.2'; value = '3.14159'
+            }
+        ) -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2'
+    }
+
+    It "Can send single Graphite metric" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
-            $response = Send-GraphiteMetric -Metrics $graphiteMetrics
+            $response = Send-GraphiteMetric -Metrics $sendMetricsSingle
+        }
+        else {
+            Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
+        }
+        $response | Should -Not -Be $null
+    }
+
+    It "Can send multiple Graphite metrics" {
+        if ($env:GRAPHITE_ACCESS_TOKEN) {
+            $response = Send-GraphiteMetric -Metrics $sendMetricsMulti
         }
         else {
             Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
@@ -40,13 +162,17 @@ Describe "Send-GraphiteMetric" {
         { Send-GraphiteMetric -Metrics @"
 [
     {
-        "name": "test.series.1",
+        "name": "test.series.0",
         "value": "3.14159",
         "interval": 10,
-        "time": $timestamp
+        "time": 1662562317
     }
 ]
 "@
         } | Should -Throw
+    }
+
+    It "Fails when invalid URI" {
+        { Invoke-TibberQuery -URI $($GraphiteURI -replace '.net', '.com') -Query "{}" } | Should -Throw
     }
 }

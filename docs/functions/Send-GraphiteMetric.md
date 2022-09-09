@@ -33,7 +33,7 @@ $response = Send-GraphiteMetric -Metrics @"
     }
 ]
 "@
-Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.StatusDescription)]: $($response.Content | ConvertFrom-Json | Select Invalid, Published)"
+Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.StatusDescription)]: $($response.Content | ConvertFrom-Json | Select-Object Invalid, Published)"
 ```
 
 ## PARAMETERS

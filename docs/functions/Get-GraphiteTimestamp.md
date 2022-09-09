@@ -1,7 +1,7 @@
 # Get-GraphiteTimestamp
 
 ## SYNOPSIS
-Create a timestamp suitable for Graphite (Unix epoch).
+Create a timestamp suitable for Graphite (Unix Epoch).
 
 ## SYNTAX
 
@@ -11,27 +11,27 @@ Get-GraphiteTimestamp [[-Timestamp] <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Calling this function will return a timestamp suitable for Graphite:
-  * If a timestamp is provided it will be parsed and converted.
-  * If no timestamp is provided the current date/time will be used.
+    - If a timestamp is provided it will be parsed and converted.
+    - If no timestamp is provided the current date/time will be used.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 $timestamp = Get-GraphiteTimestamp
-Write-Host "Current Unix epoch is: $timestamp"
+Write-Host "Current Unix Epoch is: $timestamp"
 ```
 
 ### EXAMPLE 2
 ```
 $timestamp = Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z'
-Write-Host "Unix epoch for 2022-09-07T14:51:57Z is: $timestamp"
+Write-Host "Unix Epoch for 2022-09-07T14:51:57Z is: $timestamp"
 ```
 
 ### EXAMPLE 3
 ```
 $timestamp = Get-GraphiteTimestamp -Timestamp '1662562317'
-Write-Host "Unix epoch for 1662562317 is, you guessed it...: $timestamp"
+Write-Host "Unix Epoch for 1662562317 is, you guessed it...: $timestamp"
 ```
 
 ## PARAMETERS

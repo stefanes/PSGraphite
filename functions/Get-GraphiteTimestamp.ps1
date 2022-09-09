@@ -4,8 +4,8 @@
         Create a timestamp suitable for Graphite (Unix Epoch).
     .Description
         Calling this function will return a timestamp suitable for Graphite:
-          * If a timestamp is provided it will be parsed and converted.
-          * If no timestamp is provided the current date/time will be used.
+            - If a timestamp is provided it will be parsed and converted.
+            - If no timestamp is provided the current date/time will be used.
     .Example
         $timestamp = Get-GraphiteTimestamp
         Write-Host "Current Unix Epoch is: $timestamp"
