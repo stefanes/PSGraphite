@@ -24,20 +24,12 @@ Notes:
 ### EXAMPLE 1
 ```
 $graphiteMetrics = Get-GraphiteMetric -Metrics @{
-    name = 'test.series.0'; value = '3.14159'
-} -IntervalInSeconds 10 -Timestamp $timestamp -Tags 'tag1=value1'
-Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
-```
-
-### EXAMPLE 2
-```
-$graphiteMetrics = Get-GraphiteMetric -Metrics @{
     name = 'test.series.0'; value = '3.14159'; tags = 'tag1=value1'
 } -IntervalInSeconds 10 -Timestamp $timestamp
 Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
 ```
 
-### EXAMPLE 3
+### EXAMPLE 2
 ```
 $graphiteMetrics = Get-GraphiteMetric -Metrics @(
     @{

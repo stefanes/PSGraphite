@@ -60,33 +60,33 @@ Describe "Get-GraphiteMetric" {
 
     It "Fail to get metric with missing 'value'" {
         { Get-GraphiteMetric -Metrics @(
-            @{
-                name = 'test.series.1'
-                interval = 10
-                time = 1662562317
-            }
-        ) } | Should -Throw
-    }
-
-    It "Fail to get metric with invalid name" {
-        { Get-GraphiteMetric -Metrics @(
-            @{
-                name = 'test.series-1'
-                value = '3.14159'
-                interval = 10
-                time = 1662562317
-            }
-        ) } | Should -Throw
+                @{
+                    name     = 'test.series.1'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
     }
 
     It "Fail to get metric with missing name" {
         { Get-GraphiteMetric -Metrics @(
-            @{
-                value = '3.14159'
-                interval = 10
-                time = 1662562317
-            }
-        ) } | Should -Throw
+                @{
+                    value    = '3.14159'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
+    }
+
+    It "Fail to get metric with empty name" {
+        { Get-GraphiteMetric -Metrics @(
+                @{
+                    name     = ''
+                    value    = '3.14159'
+                    interval = 10
+                    time     = 1662562317
+                }
+            ) } | Should -Throw
     }
 
     It "Format of Single Graphite metric (root)" {

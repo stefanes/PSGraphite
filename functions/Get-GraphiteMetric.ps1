@@ -12,11 +12,6 @@
             - For all other properties the parameter value is used if value it missing from input.
     .Example
         $graphiteMetrics = Get-GraphiteMetric -Metrics @{
-            name = 'test.series.0'; value = '3.14159'
-        } -IntervalInSeconds 10 -Timestamp $timestamp -Tags 'tag1=value1'
-        Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
-    .Example
-        $graphiteMetrics = Get-GraphiteMetric -Metrics @{
             name = 'test.series.0'; value = '3.14159'; tags = 'tag1=value1'
         } -IntervalInSeconds 10 -Timestamp $timestamp
         Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
@@ -92,7 +87,7 @@
 
             # Validate mertic point
             if ($null -eq $metricPoint.name -Or `
-                    $metricPoint.name -notmatch '^[\w-]+\.[\w-]+\.[\w-]+$') {
+                    $metricPoint.name -eq '') {
                 throw "Invalid metric point: $($metricPoint | ConvertTo-Json | Out-String)"
             }
 

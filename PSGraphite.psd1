@@ -7,7 +7,7 @@
     Guid          = '240d0a9b-6d45-4ffa-8792-dcbf93d1f098'
     PrivateData   = @{
         PSData = @{
-            Prerelease   = 'beta2'
+            # Prerelease   = 'beta1'
             Tags         = 'Graphite', 'Grafana'
             ProjectURI   = 'https://github.com/stefanes/PSGraphite'
             LicenseURI   = 'https://github.com/stefanes/PSGraphite/blob/master/LICENSE'
