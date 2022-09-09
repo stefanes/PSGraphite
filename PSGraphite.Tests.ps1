@@ -1,12 +1,13 @@
-﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+﻿[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 param()
 
-$global:pester_URI = 'https://graphite-us-central1.grafana.net/metrics'
+BeforeAll {
+    $GraphiteURI = 'https://graphite-us-central1.grafana.net/metrics'
+}
 
 Describe "Get-GraphiteTimestamp" {
     It "Can get new Graphite timestamp (Unix Epoch)" {
-        $global:timestamp = Get-GraphiteTimestamp
-        $timestamp | Should -Not -Be $null
+        Get-GraphiteTimestamp | Should -Not -Be $null
     }
 
     It "Can get Unix Epoch from date" {
@@ -19,33 +20,24 @@ Describe "Get-GraphiteTimestamp" {
 }
 
 Describe "Get-GraphiteMetric" {
-    #region Metrics
-    $singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
-        name = 'test.series.0'; value = '3.14'
-    } -Interval 10 -Timestamp $timestamp
+    BeforeAll {
+        $metricsSingle = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10 -Timestamp '1662562317'
 
-    $graphiteMetricWithTag = Get-GraphiteMetric -Metrics @{
-        name = 'test.series.0'; value = '3.14'
-    } -Interval 10 -Timestamp $timestamp -Tag 'tag=value' | ConvertFrom-Json
+        $metricsSingleWithTag = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10 -Timestamp '1662562317' -Tag 'tag=value'
 
-    $graphiteMetrics = Get-GraphiteMetric -Metrics @(
-        @{
-            name = 'test.series.1'; value = '3.14159'
-        }
-        @{
-            name = 'test.series.2'; value = '3'
-        }
-    ) -Interval 10 -Timestamp $timestamp
-
-    $graphiteMetricsWithTags = Get-GraphiteMetric -Metrics @(
-        @{
-            name = 'test.series.1'; value = '3.14159'
-        }
-        @{
-            name = 'test.series.2'; value = '3'
-        }
-    ) -Interval 10 -Timestamp $timestamp -Tag 'tag1=value1', 'tag2=value2' | ConvertFrom-Json
-    #endregion
+        $metricsMultiWithTags = Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                name = 'test.series.2'; value = '3.14159'
+            }
+        ) -IntervalInSeconds 10 -Timestamp '1662562317' -Tag 'tag1=value1', 'tag2=value2'
+    }
 
     It "Can get Graphite metric" {
         Get-GraphiteMetric -Metrics @(
@@ -53,68 +45,102 @@ Describe "Get-GraphiteMetric" {
                 name = 'test.series.1'; value = '3.14159'
             }
             @{
+                value = '3.14159'; time = '1662562317'
+            }
+            @{
                 name  = 'test.series.2'
-                value = '3'
+                value = '3.14159'
                 tags  = @(
                     'tag3=value3'
                     'tag4=value4'
                 )
             }
-        ) -Interval 10 -Timestamp $timestamp -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
+        ) -Name 'test.series.0' -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
     }
 
-    It "Format of singel Graphite metric (root)" {
-        $singleGraphiteMetric.StartsWith('[') | Should -Be $true
+    It "Fail to get metric with missing 'value'" {
+        { Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'
+                interval = 10
+                time = 1662562317
+            }
+        ) } | Should -Throw
     }
 
-    It "Format of singel Graphite metric (no tags)" {
-        $($singleGraphiteMetric | ConvertFrom-Json).tags | Should -Be $null
+    It "Fail to get metric with invalid name" {
+        { Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series-1'
+                value = '3.14159'
+                interval = 10
+                time = 1662562317
+            }
+        ) } | Should -Throw
     }
 
-    It "Format of singel Graphite metric (interval)" {
-        ($graphiteMetricWithTag.interval.GetType()).Name | Should -Be 'Int64'
+    It "Fail to get metric with missing name" {
+        { Get-GraphiteMetric -Metrics @(
+            @{
+                value = '3.14159'
+                interval = 10
+                time = 1662562317
+            }
+        ) } | Should -Throw
     }
 
-    It "Format of singel Graphite metric (value)" {
-        ($graphiteMetricWithTag.value.GetType()).Name | Should -Be 'Double'
+    It "Format of Single Graphite metric (root)" {
+        $metricsSingle.StartsWith('[') | Should -Be $true
     }
 
-    It "Format of singel Graphite metric (time)" {
-        ($graphiteMetricWithTag.time.GetType()).Name | Should -Be 'Int64'
+    It "Format of multiple Graphite metrics (root)" {
+        $metricsMultiWithTags.StartsWith('[') | Should -Be $true
+    }
+
+    It "Format of Single Graphite metric (no tags)" {
+        $($metricsSingle | ConvertFrom-Json).tags | Should -Be $null
+    }
+
+    It "Format of Single Graphite metric (interval)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).interval.GetType()).Name | Should -Be 'Int64'
+    }
+
+    It "Format of Single Graphite metric (value)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).value.GetType()).Name | Should -Be 'Double'
+    }
+
+    It "Format of Single Graphite metric (time)" {
+        (($metricsSingleWithTag | ConvertFrom-Json).time.GetType()).Name | Should -Be 'Int64'
     }
 
     It "Format of singe Graphite metric tag" {
-        ($graphiteMetricWithTag.tags.GetType()).Name | Should -Be 'Object[]'
-    }
-
-    It "Format of multiple Graphite metrics" {
-        $graphiteMetrics.StartsWith('[') | Should -Be $true
+        (($metricsSingleWithTag | ConvertFrom-Json).tags.GetType()).Name | Should -Be 'Object[]'
     }
 
     It "Format of multiple Graphite metric tags" {
-        ($graphiteMetricsWithTags.tags.GetType()).Name | Should -Be 'Object[]'
+        (($metricsMultiWithTags | ConvertFrom-Json).tags.GetType()).Name | Should -Be 'Object[]'
     }
 }
 
 Describe "Send-GraphiteMetric" {
-    #region Metrics
-    $singleGraphiteMetric = Get-GraphiteMetric -Metrics @{
-        name = 'test.series.0'; value = '3.14'
-    } -Interval 10
+    BeforeAll {
+        $sendMetricsSingle = Get-GraphiteMetric -Metrics @{
+            name = 'test.series.0'; value = '3.14159'
+        } -IntervalInSeconds 10
 
-    $graphiteMetrics = Get-GraphiteMetric -Metrics @(
-        @{
-            name = 'test.series.1'; value = '3.14159'
-        }
-        @{
-            name = 'test.series.2'; value = '3'
-        }
-    ) -Interval 10 -Tag 'tag1=value1', 'tag2=value2' | ConvertFrom-Json
-    #endregion
+        $sendMetricsMulti = Get-GraphiteMetric -Metrics @(
+            @{
+                name = 'test.series.1'; value = '3.14159'
+            }
+            @{
+                name = 'test.series.2'; value = '3.14159'
+            }
+        ) -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2'
+    }
 
     It "Can send single Graphite metric" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
-            $response = Send-GraphiteMetric -Metrics $singleGraphiteMetric
+            $response = Send-GraphiteMetric -Metrics $sendMetricsSingle
         }
         else {
             Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
@@ -124,7 +150,7 @@ Describe "Send-GraphiteMetric" {
 
     It "Can send multiple Graphite metrics" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
-            $response = Send-GraphiteMetric -Metrics $graphiteMetrics
+            $response = Send-GraphiteMetric -Metrics $sendMetricsMulti
         }
         else {
             Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
@@ -137,7 +163,7 @@ Describe "Send-GraphiteMetric" {
 [
     {
         "name": "test.series.0",
-        "value": "3.14",
+        "value": "3.14159",
         "interval": 10,
         "time": 1662562317
     }
@@ -147,6 +173,6 @@ Describe "Send-GraphiteMetric" {
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberQuery -URI $($Pester_URI -replace '.net', '.com') -Query "{}" } | Should -Throw
+        { Invoke-TibberQuery -URI $($GraphiteURI -replace '.net', '.com') -Query "{}" } | Should -Throw
     }
 }

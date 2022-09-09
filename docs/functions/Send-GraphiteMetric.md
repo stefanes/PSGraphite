@@ -27,7 +27,7 @@ $response = Send-GraphiteMetric -Metrics @"
     },
     {
         "name": "test.series.2",
-        "value": 3,
+        "value": 3.14159,
         "interval": 10,
         "time": 1662562317
     }
