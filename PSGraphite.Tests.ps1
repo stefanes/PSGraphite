@@ -58,16 +58,6 @@ Describe "Get-GraphiteMetric" {
         ) -Name 'test.series.0' -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
     }
 
-    It "Fail to get metric with missing 'value'" {
-        { Get-GraphiteMetric -Metrics @(
-                @{
-                    name     = 'test.series.1'
-                    interval = 10
-                    time     = 1662562317
-                }
-            ) } | Should -Throw
-    }
-
     It "Fail to get metric with missing name" {
         { Get-GraphiteMetric -Metrics @(
                 @{

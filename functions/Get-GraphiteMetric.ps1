@@ -61,11 +61,6 @@
         # Construct Graphite metrics data to send
         $sendMetrics = @()
         foreach ($metric in $Metrics) {
-            # Check mandatory properties in input
-            if (-Not $metric.value) {
-                throw "Mandatory metric point property missing: value = '$($metric.value)'"
-            }
-
             # Create new metric point
             $mpName = if ($metric.name) { $metric.name } else { $Name }
             $mpPointInterval = if ($metric.interval -gt 0) { $metric.interval } else { $IntervalInSeconds }
