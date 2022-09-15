@@ -1,6 +1,6 @@
 ﻿@{
     Description   = 'PowerShell module for publishing metrics to Graphite'
-    ModuleVersion = '0.1.2'
+    ModuleVersion = '0.1.3'
     RootModule    = 'PSGraphite.psm1'
     Author        = 'Stefan Eskelid'
     Copyright     = 'Copyright 2022 Stefan Eskelid. All rights reserved.'
@@ -10,8 +10,8 @@
             # Prerelease   = 'beta1'
             Tags         = 'Graphite', 'Grafana'
             ProjectURI   = 'https://github.com/stefanes/PSGraphite'
-            LicenseURI   = 'https://github.com/stefanes/PSGraphite/blob/master/LICENSE'
-            ReleaseNotes = "See https://github.com/stefanes/PSGraphite/blob/master/CHANGELOG.md"
+            LicenseURI   = 'https://github.com/stefanes/PSGraphite/blob/main/LICENSE'
+            ReleaseNotes = "See https://github.com/stefanes/PSGraphite/blob/main/CHANGELOG.md"
         }
     }
 }
