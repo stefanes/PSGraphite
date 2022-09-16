@@ -26,7 +26,7 @@ Import-Module -Name PSGraphite -Force -PassThru
 
 For use with e.g. Grafana Cloud you must have an account to access the API. Access tokens (_API Keys_) for Grafana can be generated at <https://grafana.com/orgs/[your-user-name]/api-keys>.
 
-To authenticate, pass the generated access token using the `-AccessToken` parameter with each call or set the `GRAPHITE_ACCESS_TOKEN` environment variable:
+To authenticate, pass the generated access token using the [`-AccessToken`](docs/functions/Send-GraphiteMetric.md#-accesstoken) parameter with each call or set the `GRAPHITE_ACCESS_TOKEN` environment variable:
 
 ```powershell
 $env:GRAPHITE_ACCESS_TOKEN = "<your access token>"
