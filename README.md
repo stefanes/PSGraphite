@@ -34,9 +34,15 @@ $env:GRAPHITE_ACCESS_TOKEN = "<your access token>"
 
 ## Usage
 
-Use `Get-Command -Module PSGraphite` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-GraphiteMetric -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details.
+Use `Get-Command -Module PSGraphite` for a list of functions provided by this module. See the help associated with each function using the `Get-Help` command, e.g. `Get-Help Get-GraphiteMetric -Detailed`, and the documentation available [in `docs`](docs/functions/) for more details:
+
+- [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md)
+- [`Get-GraphiteTimestamp`](docs/functions/Get-GraphiteTimestamp.md)
+- [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md)
 
 ### Examples
+
+> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
 
 #### Get Unix Epoch for current date/time
 
