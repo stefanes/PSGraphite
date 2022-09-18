@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 0.1.4
+
+* :new: Support for finding metrics published to Graphite with [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md)
+
 ## Version 0.1.3
 
-* Fix release notes link in [PowerShell Gallery](https://www.powershellgallery.com/packages/PSGraphite).
+* Fixed release notes link in [PowerShell Gallery](https://www.powershellgallery.com/packages/PSGraphite).
 
 ## Version 0.1.2
 
@@ -10,7 +14,7 @@
 
 ## Version 0.1.1
 
-* Support for tags in [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md).
+* Added support for tags in [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md).
 
 ## Version 0.1.0
 
