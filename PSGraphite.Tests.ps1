@@ -163,6 +163,21 @@ Describe "Send-GraphiteMetric" {
     }
 
     It "Fails when invalid URI" {
-        { Invoke-TibberQuery -URI $($GraphiteURI -replace '.net', '.com') -Query "{}" } | Should -Throw
+        { Send-GraphiteMetric -URI $($GraphiteURI -replace '.net', '.com') -Metrics "" } | Should -Throw
+    }
+}
+
+Describe "Find-GraphiteMetric" {
+    It "Can find Graphite metric" {
+        if ($env:GRAPHITE_ACCESS_TOKEN) {
+            Find-GraphiteMetric -Metric 'test.series.0' -From $([DateTime]::Now.AddHours(-1)) -To $([DateTime]::Now.AddHours(1)) | Should -Be $true
+        }
+        else {
+            Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
+        }
+    }
+
+    It "Fails when invalid URI" {
+        { Find-GraphiteMetric -URI $($GraphiteURI -replace '.net', '.com') } | Should -Throw
     }
 }
