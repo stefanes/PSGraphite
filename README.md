@@ -6,6 +6,10 @@ PowerShell module for publishing metrics to Graphite.
 
 > _:heavy_check_mark: See [CHANGELOG.md](CHANGELOG.md) for what's new!_
 
+![Grafana](docs/resources/grafana.png)
+
+> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
+
 ## Installation
 
 Using the [latest version of PowerShellGet](https://www.powershellgallery.com/packages/PowerShellGet):
@@ -41,8 +45,6 @@ Use `Get-Command -Module PSGraphite` for a list of functions provided by this mo
 - [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md)
 
 ### Examples
-
-> _:heavy_check_mark: See [here](https://github.com/stefanes/tibber-pulse) for an example of this module in action..._
 
 #### Get Unix Epoch for current date/time
 
