@@ -38,7 +38,7 @@
     param (
         # Specifies the metric points to send.
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
-        [Object[]] $Metrics,
+        [hashtable[]] $Metrics,
 
         # Specifies the name of the metrics, unless provided in metric point.
         [Parameter(ValueFromPipelineByPropertyName)]

@@ -6,7 +6,7 @@ Get Graphite metrics data to send.
 ## SYNTAX
 
 ```
-Get-GraphiteMetric [-Metrics] <Object[]> [[-Name] <String>] [[-IntervalInSeconds] <Int32>]
+Get-GraphiteMetric [-Metrics] <Hashtable[]> [[-Name] <String>] [[-IntervalInSeconds] <Int32>]
  [[-Timestamp] <String>] [[-Tags] <String[]>] [<CommonParameters>]
 ```
 
@@ -53,7 +53,7 @@ Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
 Specifies the metric points to send.
 
 ```yaml
-Type: Object[]
+Type: Hashtable[]
 Parameter Sets: (All)
 Aliases:
 

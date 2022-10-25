@@ -30,9 +30,17 @@
     [CmdletBinding(DefaultParameterSetName = 'URI')]
     param (
         # Specifies the URI for the request.
+        # Override default using the GRAPHITE_HOST environment variable.
         [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
         [Alias('URL')]
-        [Uri] $URI = 'https://graphite-us-central1.grafana.net/metrics',
+        [Uri] $URI = $(
+            if ($env:GRAPHITE_HOST) {
+                "$env:GRAPHITE_HOST/metrics"
+            }
+            else {
+                'https://graphite-us-central1.grafana.net/metrics'
+            }
+        ),
 
         # Specifies the metrics to send.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -43,6 +51,7 @@
         [string] $ContentType = 'application/json',
 
         # Specifies the access token to use for the communication.
+        # Override default using the GRAPHITE_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('Token')]
         [string] $AccessToken = $(

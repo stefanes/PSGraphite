@@ -13,9 +13,17 @@
     [OutputType([bool])]
     param (
         # Specifies the URI for the request.
+        # Override default using the GRAPHITE_HOST environment variable.
         [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
         [Alias('URL')]
-        [Uri] $URI = 'https://graphite-us-central1.grafana.net/graphite/metrics/find',
+        [Uri] $URI = $(
+            if ($env:GRAPHITE_HOST) {
+                "$env:GRAPHITE_HOST/graphite/metrics/find"
+            }
+            else {
+                'https://graphite-us-central1.grafana.net/graphite/metrics/find'
+            }
+        ),
 
         # Specifies the metric to find.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -34,6 +42,7 @@
         [string] $ContentType = 'application/json',
 
         # Specifies the access token to use for the communication.
+        # Override default using the GRAPHITE_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('Token')]
         [string] $AccessToken = $(

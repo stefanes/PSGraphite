@@ -40,6 +40,7 @@ Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.Status
 
 ### -URI
 Specifies the URI for the request.
+Override default using the GRAPHITE_HOST environment variable.
 
 ```yaml
 Type: Uri
@@ -48,7 +49,14 @@ Aliases: URL
 
 Required: False
 Position: Named
-Default value: Https://graphite-us-central1.grafana.net/metrics
+Default value: $(
+            if ($env:GRAPHITE_HOST) {
+                "$env:GRAPHITE_HOST/metrics"
+            }
+            else {
+                'https://graphite-us-central1.grafana.net/metrics'
+            }
+        )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -85,6 +93,7 @@ Accept wildcard characters: False
 
 ### -AccessToken
 Specifies the access token to use for the communication.
+Override default using the GRAPHITE_ACCESS_TOKEN environment variable.
 
 ```yaml
 Type: String

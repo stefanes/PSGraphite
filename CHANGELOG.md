@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 0.1.5
+
+* Override default using the `GRAPHITE_HOST` environment variable in [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md) and [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md).
+
 ## Version 0.1.4
 
-* :new: Support for finding metrics published to Graphite with [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md)
+* :new: Support for finding metrics published to Graphite with [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md).
 
 ## Version 0.1.3
 

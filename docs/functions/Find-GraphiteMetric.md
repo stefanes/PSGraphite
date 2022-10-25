@@ -24,6 +24,7 @@ Get-GraphiteTimestamp
 
 ### -URI
 Specifies the URI for the request.
+Override default using the GRAPHITE_HOST environment variable.
 
 ```yaml
 Type: Uri
@@ -32,7 +33,14 @@ Aliases: URL
 
 Required: False
 Position: Named
-Default value: Https://graphite-us-central1.grafana.net/graphite/metrics/find
+Default value: $(
+            if ($env:GRAPHITE_HOST) {
+                "$env:GRAPHITE_HOST/graphite/metrics/find"
+            }
+            else {
+                'https://graphite-us-central1.grafana.net/graphite/metrics/find'
+            }
+        )
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -99,6 +107,7 @@ Accept wildcard characters: False
 
 ### -AccessToken
 Specifies the access token to use for the communication.
+Override default using the GRAPHITE_ACCESS_TOKEN environment variable.
 
 ```yaml
 Type: String
