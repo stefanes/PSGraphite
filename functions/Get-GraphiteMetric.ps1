@@ -90,8 +90,8 @@
             $sendMetrics += $metricPoint
         }
         $sendMetrics = @(, $sendMetrics) | ConvertTo-Json -Depth 10
-        Write-Debug "Gaphite metrics:"
-        Write-Debug "$sendMetrics"
+        Write-Debug -Message "Gaphite metrics:"
+        Write-Debug -Message $sendMetrics
 
         # Output object
         $sendMetrics

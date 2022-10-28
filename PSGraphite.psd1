@@ -1,6 +1,6 @@
 ﻿@{
     Description   = 'PowerShell module for publishing metrics to Graphite'
-    ModuleVersion = '0.1.5'
+    ModuleVersion = '0.1.6'
     RootModule    = 'PSGraphite.psm1'
     Author        = 'Stefan Eskelid'
     Copyright     = 'Copyright 2022 Stefan Eskelid. All rights reserved.'

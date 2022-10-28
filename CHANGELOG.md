@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.6
+
+* :recycle: INTERNAL: Make timestamps culture-independent.
+
 ## Version 0.1.5
 
 * Override default using the `GRAPHITE_HOST` environment variable in [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md) and [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md).

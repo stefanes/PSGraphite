@@ -85,7 +85,7 @@
         # Note: Using 'Invoke-WebRequest' to get the headers
         $eap = $ErrorActionPreference
         $ErrorActionPreference = 'SilentlyContinue'
-        Write-Debug -Message ("Invoking web request: GET " + $URI)
+        Write-Debug -Message "Invoking web request: GET $URI"
         $response = Invoke-WebRequest @splat -Uri $URI
         $responseContent = $response.Content | ConvertFrom-Json # Convert the response from JSON
         Write-Debug -Message "Response: $($response.StatusCode) $($response.StatusDescription)"
