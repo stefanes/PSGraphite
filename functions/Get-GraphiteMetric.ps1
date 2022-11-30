@@ -83,7 +83,7 @@
             # Validate mertic point
             if ($null -eq $metricPoint.name -Or `
                     $metricPoint.name -eq '') {
-                throw "Invalid metric point: $($metricPoint | ConvertTo-Json | Out-String)"
+                throw "Invalid metric point: $($metricPoint | ConvertTo-Json -Depth 10)"
             }
 
             # Append metric point to metrics

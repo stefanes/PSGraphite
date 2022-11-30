@@ -76,6 +76,12 @@
             TimeoutSec    = 60
             ErrorVariable = 'err'
         }
+        if ($PSVersionTable.PSVersion.Major -le 5) {
+            # Additional parameters *not* supported from PowerShell version 6
+            $splat += @{
+                UseBasicParsing = $true
+            }
+        }
         $err = @( )
 
         # Append query to the URI

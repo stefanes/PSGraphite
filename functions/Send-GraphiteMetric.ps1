@@ -46,10 +46,6 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $Metrics,
 
-        # Specifies the content type of the request.
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $ContentType = 'application/json',
-
         # Specifies the access token to use for the communication.
         # Override default using the GRAPHITE_ACCESS_TOKEN environment variable.
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -72,7 +68,7 @@
 
         # Setup request headers
         $headers = @{
-            'Content-Type'  = $ContentType
+            'Content-Type'  = 'application/json'
             'Authorization' = "Bearer $AccessToken"
         }
     }
@@ -85,6 +81,12 @@
             Headers       = $headers
             TimeoutSec    = 60
             ErrorVariable = 'err'
+        }
+        if ($PSVersionTable.PSVersion.Major -le 5) {
+            # Additional parameters *not* supported from PowerShell version 6
+            $splat += @{
+                UseBasicParsing = $true
+            }
         }
         $err = @( )
 

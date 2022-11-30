@@ -6,8 +6,7 @@ Send Graphite metrics to an HTTP endpoint.
 ## SYNTAX
 
 ```
-Send-GraphiteMetric [-URI <Uri>] [-Metrics <String>] [-ContentType <String>] [-AccessToken <String>]
- [<CommonParameters>]
+Send-GraphiteMetric [-URI <Uri>] [-Metrics <String>] [-AccessToken <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -72,21 +71,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -ContentType
-Specifies the content type of the request.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: Application/json
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
