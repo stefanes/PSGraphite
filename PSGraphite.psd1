@@ -3,7 +3,7 @@
     ModuleVersion = '0.1.7'
     RootModule    = 'PSGraphite.psm1'
     Author        = 'Stefan Eskelid'
-    Copyright     = 'Copyright 2022 Stefan Eskelid. All rights reserved.'
+    Copyright     = 'Copyright 2023 Stefan Eskelid. All rights reserved.'
     Guid          = '240d0a9b-6d45-4ffa-8792-dcbf93d1f098'
     PrivateData   = @{
         PSData = @{
