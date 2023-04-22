@@ -14,6 +14,10 @@ Describe "Get-GraphiteTimestamp" {
         Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z' | Should -Be '1662562317'
     }
 
+    It "Can get Unix Epoch from date adding seconds" {
+        Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z' -AddSeconds 100 | Should -Be '1662562417'
+    }
+
     It "Can get Unix Epoch back" {
         Get-GraphiteTimestamp -Timestamp '1662562317' | Should -Be '1662562317'
     }

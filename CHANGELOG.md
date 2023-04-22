@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.8
+
+* Add support for modifying the timestamp returned by `Get-GraphiteTimestamp` by adding/subtracting seconds.
+
 ## Version 0.1.7
 
 * Add support for Windows PowerShell (Note: PowerShell Core is recommended).

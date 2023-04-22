@@ -6,7 +6,7 @@ Create a timestamp suitable for Graphite (Unix Epoch).
 ## SYNTAX
 
 ```
-Get-GraphiteTimestamp [[-Timestamp] <String>] [<CommonParameters>]
+Get-GraphiteTimestamp [[-Timestamp] <String>] [[-AddSeconds] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -48,6 +48,22 @@ Required: False
 Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -AddSeconds
+Specifies the number of seconds to add to the timestamp.
+The value can be negative or positive.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: 0
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
