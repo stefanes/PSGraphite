@@ -50,10 +50,9 @@ Required: False
 Position: Named
 Default value: $(
             if ($env:GRAPHITE_HOST) {
-                "$env:GRAPHITE_HOST/metrics"
-            }
-            else {
-                'https://graphite-us-central1.grafana.net/metrics'
+                $env:GRAPHITE_HOST
+            } else {
+                'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
             }
         )
 Accept pipeline input: True (ByPropertyName)
@@ -89,8 +88,7 @@ Position: Named
 Default value: $(
             if ($script:GraphiteAccessTokenCache) {
                 $script:GraphiteAccessTokenCache
-            }
-            elseif ($env:GRAPHITE_ACCESS_TOKEN) {
+            } elseif ($env:GRAPHITE_ACCESS_TOKEN) {
                 $env:GRAPHITE_ACCESS_TOKEN
             }
         )

@@ -35,10 +35,9 @@ Required: False
 Position: Named
 Default value: $(
             if ($env:GRAPHITE_HOST) {
-                "$env:GRAPHITE_HOST/graphite/metrics/find"
-            }
-            else {
-                'https://graphite-us-central1.grafana.net/graphite/metrics/find'
+                "$env:GRAPHITE_HOST/find"
+            } else {
+                'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics/find'
             }
         )
 Accept pipeline input: True (ByPropertyName)
@@ -119,8 +118,7 @@ Position: Named
 Default value: $(
             if ($script:GraphiteAccessTokenCache) {
                 $script:GraphiteAccessTokenCache
-            }
-            elseif ($env:GRAPHITE_ACCESS_TOKEN) {
+            } elseif ($env:GRAPHITE_ACCESS_TOKEN) {
                 $env:GRAPHITE_ACCESS_TOKEN
             }
         )

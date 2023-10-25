@@ -75,9 +75,11 @@ Write-Host "Will send the following metrics to Graphite: $graphiteMetrics"
 #### Send metrics to Graphite
 
 ```powershell
-$response = Send-GraphiteMetric -Metrics $graphiteMetrics
+$response = Send-GraphiteMetric -URI "https://graphite-blocks-prod-us-central1.grafana.net/graphite" -Metrics $graphiteMetrics
 Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.StatusDescription)]: $($response.Content | ConvertFrom-Json | Select Invalid, Published)"
 ```
+
+The enpoint URL can also be specified by setting the `GRAPHITE_HOST` environment variable.
 
 ### Debugging
 
@@ -87,7 +89,7 @@ Example:
 
 ```powershell
 PS> Send-GraphiteMetric -Metrics $graphiteMetrics -Debug
-DEBUG: Invoking web request: POST https://graphite-us-central1.grafana.net/metrics
+DEBUG: Invoking web request: POST https://graphite-blocks-prod-us-central1.grafana.net/graphite
 DEBUG: Graphite metrics: [
   {
     "name": "test.series.1",

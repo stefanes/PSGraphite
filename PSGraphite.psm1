@@ -7,8 +7,7 @@ $allFunctions = $publicFunctions + $privateFunctions
 foreach ($function in $AllFunctions) {
     try {
         . $function.Fullname
-    }
-    catch {
+    } catch {
         Write-Error -Message "Failed to import function $($function.Fullname): $_"
     }
 }

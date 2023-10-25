@@ -2,7 +2,7 @@
 param()
 
 BeforeAll {
-    $GraphiteURI = 'https://graphite-us-central1.grafana.net/metrics'
+    $GraphiteURI = 'https://graphite-blocks-prod-us-central1.grafana.net/graphite'
 }
 
 Describe "Get-GraphiteTimestamp" {

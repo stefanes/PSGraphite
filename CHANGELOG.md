@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.9
+
+* Update default metrics endpoint URI.
+
 ## Version 0.1.8
 
 * Add support for modifying the timestamp returned by `Get-GraphiteTimestamp` by adding/subtracting seconds.
