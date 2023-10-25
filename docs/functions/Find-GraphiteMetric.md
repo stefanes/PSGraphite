@@ -24,7 +24,7 @@ Get-GraphiteTimestamp
 
 ### -URI
 Specifies the URI for the request.
-Override default using the GRAPHITE_HOST environment variable.
+Override default using the GRAPHITE_ENDPOINT or GRAPHITE_HOST environment variables.
 
 ```yaml
 Type: Uri
@@ -34,8 +34,10 @@ Aliases: URL
 Required: False
 Position: Named
 Default value: $(
-            if ($env:GRAPHITE_HOST) {
-                "$env:GRAPHITE_HOST/find"
+            if ($env:GRAPHITE_ENDPOINT) {
+                "$env:GRAPHITE_ENDPOINT/find"
+            } elseif ($env:GRAPHITE_HOST) {
+                "https://$env:GRAPHITE_HOST/graphite/metrics/find"
             } else {
                 'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics/find'
             }

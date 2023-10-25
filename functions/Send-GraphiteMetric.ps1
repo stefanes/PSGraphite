@@ -30,12 +30,14 @@
     [CmdletBinding(DefaultParameterSetName = 'URI')]
     param (
         # Specifies the URI for the request.
-        # Override default using the GRAPHITE_HOST environment variable.
+        # Override default using the GRAPHITE_ENDPOINT or GRAPHITE_HOST environment variables.
         [Parameter(ParameterSetName = 'URI', ValueFromPipelineByPropertyName)]
         [Alias('URL')]
         [Uri] $URI = $(
-            if ($env:GRAPHITE_HOST) {
-                $env:GRAPHITE_HOST
+            if ($env:GRAPHITE_ENDPOINT) {
+                $env:GRAPHITE_ENDPOINT
+            } elseif ($env:GRAPHITE_HOST) {
+                "https://$env:GRAPHITE_HOST/graphite/metrics"
             } else {
                 'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
             }

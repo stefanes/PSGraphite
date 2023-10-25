@@ -79,7 +79,7 @@ $response = Send-GraphiteMetric -URI "https://graphite-blocks-prod-us-central1.g
 Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.StatusDescription)]: $($response.Content | ConvertFrom-Json | Select Invalid, Published)"
 ```
 
-The enpoint URL can also be specified by setting the `GRAPHITE_HOST` environment variable.
+The endpoint URL can also be specified by setting the `GRAPHITE_ENDPOINT` or `GRAPHITE_HOST` environment variables.
 
 ### Debugging
 

@@ -39,7 +39,7 @@ Write-Host "Metrics sent to Graphite [$($response.StatusCode) $($response.Status
 
 ### -URI
 Specifies the URI for the request.
-Override default using the GRAPHITE_HOST environment variable.
+Override default using the GRAPHITE_ENDPOINT or GRAPHITE_HOST environment variables.
 
 ```yaml
 Type: Uri
@@ -49,8 +49,10 @@ Aliases: URL
 Required: False
 Position: Named
 Default value: $(
-            if ($env:GRAPHITE_HOST) {
-                $env:GRAPHITE_HOST
+            if ($env:GRAPHITE_ENDPOINT) {
+                $env:GRAPHITE_ENDPOINT
+            } elseif ($env:GRAPHITE_HOST) {
+                "https://$env:GRAPHITE_HOST/graphite/metrics"
             } else {
                 'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
             }
