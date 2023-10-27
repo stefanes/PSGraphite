@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.11
+
+- [`Get-GraphiteTimestamp`](docs/functions/Get-GraphiteTimestamp.md) now knows how to parse `DateTime` objects with the `-Date` parameter.
+- [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md) can now output the result to the console using the `-OutputToConsole`/`-PassThru` parameters.
+
 ## Version 0.1.10
 
 - Override defaults using the `GRAPHITE_ENDPOINT` **or** `GRAPHITE_HOST` environment variables in [`Send-GraphiteMetric`](docs/functions/Send-GraphiteMetric.md) and [`Find-GraphiteMetric`](docs/functions/Find-GraphiteMetric.md).

@@ -10,12 +10,16 @@ Describe "Get-GraphiteTimestamp" {
         Get-GraphiteTimestamp | Should -Not -Be $null
     }
 
-    It "Can get Unix Epoch from date" {
+    It "Can get Unix Epoch from date string" {
         Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z' | Should -Be '1662562317'
     }
 
-    It "Can get Unix Epoch from date adding seconds" {
+    It "Can get Unix Epoch from date string adding seconds" {
         Get-GraphiteTimestamp -Timestamp '2022-09-07T14:51:57Z' -AddSeconds 100 | Should -Be '1662562417'
+    }
+
+    It "Can get Unix Epoch from date" {
+        Get-GraphiteTimestamp -Date $([DateTime]::Parse('2022-09-07T14:51:57Z')) | Should -Be '1662562317'
     }
 
     It "Can get Unix Epoch back" {
@@ -135,8 +139,16 @@ Describe "Send-GraphiteMetric" {
     It "Can send single Graphite metric" {
         if ($env:GRAPHITE_ACCESS_TOKEN) {
             $response = Send-GraphiteMetric -Metrics $sendMetricsSingle
+        } else {
+            Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
         }
-        else {
+        $response | Should -Not -Be $null
+    }
+
+    It "Can send single Graphite metric with output to console" {
+        if ($env:GRAPHITE_ACCESS_TOKEN) {
+            $response = Send-GraphiteMetric -Metrics $sendMetricsSingle -OutputToConsole -PassThru
+        } else {
             Write-Warning "Environment variable '`$env:GRAPHITE_ACCESS_TOKEN' not set..."
         }
         $response | Should -Not -Be $null
