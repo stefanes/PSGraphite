@@ -6,7 +6,7 @@ Get Graphite metrics data to send.
 ## SYNTAX
 
 ```
-Get-GraphiteMetric [-Metrics] <Hashtable[]> [[-Name] <String>] [[-IntervalInSeconds] <Int32>]
+Get-GraphiteMetric [-Metrics] <Hashtable[]> [[-Name] <String>] [-ToLower] [[-IntervalInSeconds] <Int32>]
  [[-Timestamp] <String>] [[-Tags] <String[]>] [<CommonParameters>]
 ```
 
@@ -76,6 +76,21 @@ Required: False
 Position: 2
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ToLower
+Switch to convert the name of the metrics to lowercase.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
