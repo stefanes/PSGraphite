@@ -63,7 +63,7 @@ Describe "Get-GraphiteMetric" {
                     'tag4=value4'
                 )
             }
-        ) -Name 'test.series.0' -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2' | Should -Not -Be $null
+        ) -Name 'test.series.0' -IntervalInSeconds 10 -Tag 'tag1=value1', 'tag2=value2' -ToLower | Should -Not -Be $null
     }
 
     It "Fail to get metric with missing name" {

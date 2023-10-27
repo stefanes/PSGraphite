@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.12
+
+- [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md) can now be instructed to convert the provided metric names to lowercase using the `-ToLower` parameter.
+
 ## Version 0.1.11
 
 - [`Get-GraphiteTimestamp`](docs/functions/Get-GraphiteTimestamp.md) now knows how to parse `DateTime` objects with the `-Date` parameter.

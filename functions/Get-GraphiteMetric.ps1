@@ -44,6 +44,9 @@
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $Name,
 
+        # Switch to convert the name of the metrics to lowercase.
+        [switch] $ToLower,
+
         # Specifies the resolution of the metrics in seconds, unless provided in metric point.
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('Interval')]
@@ -63,6 +66,7 @@
         foreach ($metric in $Metrics) {
             # Create new metric point
             $mpName = if ($metric.name) { $metric.name } else { $Name }
+            if ($ToLower.IsPresent) { $mpName = $mpName.ToLower() }
             $mpPointInterval = if ($metric.interval -gt 0) { $metric.interval } else { $IntervalInSeconds }
             $mpPointTime = if ($metric.time -gt 0) { $metric.time } else { Get-GraphiteTimestamp -Timestamp $Timestamp }
             $metricPoint = @{
