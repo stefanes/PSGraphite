@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.13
+
+Un-break unintentional breaking change introduced in version 0.1.10.
+
 ## Version 0.1.12
 
 - [`Get-GraphiteMetric`](docs/functions/Get-GraphiteMetric.md) can now be instructed to convert the provided metric names to lowercase using the `-ToLower` parameter.

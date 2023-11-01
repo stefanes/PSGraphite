@@ -37,7 +37,7 @@
             if ($env:GRAPHITE_ENDPOINT) {
                 $env:GRAPHITE_ENDPOINT
             } elseif ($env:GRAPHITE_HOST) {
-                "https://$env:GRAPHITE_HOST/graphite/metrics"
+                "https://$env:GRAPHITE_HOST/graphite/metrics" -replace '^https:\/\/http', 'http'
             } else {
                 'https://graphite-blocks-prod-us-central1.grafana.net/graphite/metrics'
             }
